@@ -1,0 +1,15 @@
+[package]
+name = "sss_fft"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+description = "FFT and IFFT for arrays and iterateable collections with modular algorithm interface"
+repository = "https://github.com/sigurd4/sss_fft"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+num = "0.4.0"
+iter_spread = "0.1.0"
+array_par_map = "0.1.0"
+len-trait = "0.6.1"
