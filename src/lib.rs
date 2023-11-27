@@ -9,6 +9,8 @@ moddef::moddef!(
         ifft,
         fft_algorithm,
         fft_paralellism,
+
+        sliding_dft
     }
 );
 
