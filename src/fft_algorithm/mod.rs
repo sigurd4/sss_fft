@@ -1,4 +1,9 @@
-mod fft_algorithm_recursive; pub use fft_algorithm_recursive::*;
+moddef::moddef!(
+    flat(pub) mod {
+        fft_algorithm_recursive
+    }
+);
+
 use len_trait::Len;
 
 use std::f64::consts::TAU;

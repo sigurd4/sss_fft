@@ -1,5 +1,9 @@
-mod fft_paralellism_par; pub use fft_paralellism_par::*;
-mod fft_paralellism_none; pub use fft_paralellism_none::*;
+moddef::moddef!(
+    flat(pub) mod {
+        fft_paralellism_par,
+        fft_paralellism_none
+    }
+);
 
 use iter_spread::IterSpread;
 

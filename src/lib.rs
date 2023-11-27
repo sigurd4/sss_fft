@@ -3,10 +3,14 @@
 #![feature(generic_const_exprs)]
 #![feature(generic_arg_infer)]
 
-mod fft; pub use fft::*;
-mod ifft; pub use ifft::*;
-mod fft_algorithm; pub use fft_algorithm::*;
-mod fft_paralellism; pub use fft_paralellism::*;
+moddef::moddef!(
+    flat(pub) mod {
+        fft,
+        ifft,
+        fft_algorithm,
+        fft_paralellism,
+    }
+);
 
 #[cfg(test)]
 mod test
