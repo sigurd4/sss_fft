@@ -4,12 +4,12 @@ use array_math::ArrayOps;
 use num::{complex::ComplexFloat, Complex, Float, Zero};
 use crate::{FFT, FFTUsingAlgorithm};
 
-pub struct SlidingDFT<F, const N: usize>{
-    x_f: [Complex<F>; N],
-    x: [F; N]
+pub struct BoxedSlidingDFT<F, const N: usize>{
+    x_f: Box<[Complex<F>; N]>,
+    x: Box<[F; N]>
 }
 
-impl<F, const N: usize> Default for SlidingDFT<F, N>
+impl<F, const N: usize> Default for BoxedSlidingDFT<F, N>
 where
     Complex<F>: ComplexFloat,
     F: Float
@@ -17,27 +17,30 @@ where
     fn default() -> Self
     {
         Self {
-            x_f: ArrayOps::fill(|_| Complex::zero()),
-            x: ArrayOps::fill(|_| F::zero())
+            x_f: ArrayOps::fill_boxed(|_| Complex::zero()),
+            x: ArrayOps::fill_boxed(|_| F::zero())
         }
     }
 }
 
-impl<F, const N: usize> SlidingDFT<F, N>
+impl<F, const N: usize> BoxedSlidingDFT<F, N>
 where
     Complex<F>: ComplexFloat + MulAssign,
     F: Float
 {
-    pub fn new<A>(x: [F; N]) -> Self
+    pub fn new<'a, A>(x: Box<[F; N]>) -> Self
     where
-        [F; N]: FFTUsingAlgorithm<[Complex<F>; N], A>
+        Vec<F>: FFTUsingAlgorithm<Vec<Complex<F>>, A>
     {
+        let mut x_f = x.to_vec().fft::<A>().into_iter();
+        let x_f = ArrayOps::fill_boxed(|_| x_f.next().unwrap());
+
         Self {
-            x_f: x.fft::<A>(),
+            x_f,
             x
         }
     }
-    
+
     pub fn get_input(&self) -> &[F; N]
     {
         &self.x

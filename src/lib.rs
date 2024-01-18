@@ -10,24 +10,27 @@ moddef::moddef!(
         fft_algorithm,
         fft_paralellism,
 
-        sliding_dft
+        sliding_dft,
+        boxed_sliding_dft
     }
 );
 
 #[cfg(test)]
 mod test
 {
+    use array_math::ArrayOps;
     use num::Complex;
 
-    use crate::{FFT, IFFT};
+    use crate::{BoxedSlidingDFT, FFTAlgorithmRecursive, FFTParalellismNone, FFT, IFFT};
 
     #[test]
     fn it_works()
     {
-        let x = [1.0, 2.0, 3.0, 4.0];
-        let y: [Complex<f64>; _] = x.fft_rec_par();
-        let x: [Complex<f64>; _] = y.ifft_rec_par();
-        println!("{:?}", x)
+        let mut dft = BoxedSlidingDFT::<f64, 0b100000000000000>::default();
+
+        let y = dft.next(1.0);
+
+        println!("{:?}", y[1])
     }
 
     const N: usize = 4096;
